@@ -13,18 +13,22 @@ public class UserDetailsImpl implements UserDetails, CredentialsContainer {
 
     private final User user;
 
-    public UserDetailsImpl(User user2) {
-        this.user = user2;
+    public UserDetailsImpl(User user) {
+        this.user = user;
     } 
 
+    public static UserDetailsImpl build(User user) {
+        return new UserDetailsImpl(user);
+    } 
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().toUpperCase()));
+        return List.of(new SimpleGrantedAuthority(user.getRole().name()));
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getEmail(); 
     }
 
     @Override
@@ -40,8 +44,9 @@ public class UserDetailsImpl implements UserDetails, CredentialsContainer {
     
     @Override
     public void eraseCredentials() {
-        //
-        throw new UnsupportedOperationException("Unimplemented method 'eraseCredentials'");
+        if(user != null) {
+            user.setPassword(null);
+        }
     }
 
     

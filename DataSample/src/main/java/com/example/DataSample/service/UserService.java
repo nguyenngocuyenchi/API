@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.example.DataSample.model.User;
 
 public interface UserService {
+
     User saveUser(User user);
-    User findUserByUsername(String username);
+    Optional<User> findUserByUsername(String username);
 }

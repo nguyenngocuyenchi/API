@@ -1,19 +1,12 @@
 package com.example.DataSample.controller;
 
-import java.net.Authenticator;
-
-import javax.naming.AuthenticationException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.DataSample.model.User;
+import com.example.DataSample.security.AuthenticationRequest;
+import com.example.DataSample.security.AuthenticationResponse;
+import com.example.DataSample.service.AuthenticationService;
 import com.example.DataSample.service.UserServiceImpl;
 
 @RestController
@@ -21,14 +14,12 @@ import com.example.DataSample.service.UserServiceImpl;
 public class UserController {
 
     private final UserServiceImpl userService;
-    private final BCryptPasswordEncoder encoder;
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationService authService;
 
     @Autowired
-    public UserController(UserServiceImpl userService, BCryptPasswordEncoder encoder, AuthenticationManager authenticationManager) {
+    public UserController(UserServiceImpl userService, AuthenticationService authService) {
         this.userService = userService;
-        this.encoder = encoder;
-        this.authenticationManager = authenticationManager;
+        this.authService = authService;
     }
 
     @GetMapping("/")
@@ -37,30 +28,19 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User register) {
-        register.setPassword(encoder.encode(register.getPassword()));
-        register.setRole("USER");
-        userService.saveUser(register);
-        return new ResponseEntity<>("user saved", HttpStatus.OK);
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(authService.register(request));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginRequest.username(),loginRequest.password())
-        );
-        return ResponseEntity.ok("Login successful");
-}
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+        return ResponseEntity.ok(authService.authenticate(request));
+    }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("testingggg...");
+    }
    
-  
-    public record LoginRequest(String username, String password) {
-
-    }
-
-    @GetMapping("/login")
-    String login() {
-        return "login";
-    }
 }
 

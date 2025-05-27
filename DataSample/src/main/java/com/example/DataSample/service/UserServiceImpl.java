@@ -26,33 +26,42 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.dataRepo = dataRepo;
     }
 
+    
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        User user = userRepo.findByUsername(username);
-        if (user == null) throw new UsernameNotFoundException("Not found");
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepo.findByEmail(username)
+            .orElseThrow(() -> new UsernameNotFoundException("not found with email: " + username));
         return new UserDetailsImpl(user);
     }
+
 
     @Override
     public User saveUser(User user) {
         return userRepo.save(user);
     }
 
-    @Override
-    public User findUserByUsername(String username) {
-        return userRepo.findByUsername(username);
+    public Optional<User> findByEmail(String email) {
+        return userRepo.findByEmail(email);
     }
 
     public List<User> findAllUser() {
         return userRepo.findAll();
     }
 
-    public void createDataForUser(String username, Data data) {
-        User user = userRepo.findByUsername(username);
-        if (user == null) throw new UsernameNotFoundException("user not found");
-
+    public void createDataForUser(String email, Data data) {
+        User user = userRepo.findByEmail(email)
+            .orElseThrow(() -> new UsernameNotFoundException("user not found"));
         data.setUser(user);
         dataRepo.save(data);    
     }
+    
+
+    @Override
+    public Optional<User> findUserByUsername(String username) {
+        return userRepo.findByEmail(username);
+    }
+
+    
 
 }
+ 

@@ -2,7 +2,6 @@ package com.example.DataSample.service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.DataSample.exception.*;
@@ -70,11 +69,11 @@ public class DataService {
     }
 
     public void createDataForUser(String username, Data data) {
-        User user = userServiceImpl.findUserByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("user : " + username + " not found");
-        }
+        User user = userServiceImpl.findUserByUsername(username).orElseThrow(() -> new NotFoundException("User: " + username + " not found"));
         data.setUser(user);
         dataRepo.save(data);
+
     }
+
+    
 }

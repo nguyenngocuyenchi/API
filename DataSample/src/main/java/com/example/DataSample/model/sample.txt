@@ -16,3 +16,11 @@
     "password": "chi",
     "role": "ADMIN"
 }
+
+{
+    "firstname": "chi",
+    "lastname": "nguyen",
+    "email": "nguyen@gmail.com",
+    "password": "pass",
+    "role": "USER"
+}
