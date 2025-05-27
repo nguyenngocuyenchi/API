@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         data.setUser(user);
         dataRepo.save(data);    
     }
+    
 
     @Override
     public Optional<User> findUserByUsername(String username) {

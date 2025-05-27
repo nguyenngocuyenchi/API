@@ -39,7 +39,7 @@ public class UserController {
 
     @GetMapping("/test")
     public ResponseEntity<String> test() {
-        return ResponseEntity.ok("testing...");
+        return ResponseEntity.ok("testingggg...");
     }
    
 }

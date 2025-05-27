@@ -1,56 +1,35 @@
 package com.example.DataSample.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 @Entity
-@Getter
-@Setter
+@Table(name = "user")
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false, length = 255)
     private String firstName;
+
+    @Column(nullable = false, length = 255)
     private String lastName;
+
+    @Column(nullable = false, length = 255)
     private String email;
+
+    @Column(nullable = false, length = 255)
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    /*
-     *@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Data> dataList = new ArrayList<>();
     
-
-     */
-
-    public User(String firstName, String lastName, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-    }
-
-    
-    /*
-     *    public List<Data> getDataList() {
-        return dataList;
-    }
-
-    public void setDataList(List<Data> dataList) {
-        this.dataList = dataList;
-    }
- 
-     */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Data> dataList;
 }

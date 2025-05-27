@@ -7,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.DataSample.model.Role;
 import com.example.DataSample.model.User;
 
 public class UserDetailsImpl implements UserDetails, CredentialsContainer {
@@ -29,7 +28,7 @@ public class UserDetailsImpl implements UserDetails, CredentialsContainer {
 
     @Override
     public String getUsername() {
-        return user.getFirstName(); //
+        return user.getEmail(); 
     }
 
     @Override
@@ -45,8 +44,9 @@ public class UserDetailsImpl implements UserDetails, CredentialsContainer {
     
     @Override
     public void eraseCredentials() {
-        //
-        throw new UnsupportedOperationException("Unimplemented method 'eraseCredentials'");
+        if(user != null) {
+            user.setPassword(null);
+        }
     }
 
     

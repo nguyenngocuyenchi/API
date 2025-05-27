@@ -66,6 +66,7 @@ public class DataController {
         userServiceImpl.createDataForUser(username, data);
         return new ResponseEntity<>("data created !", HttpStatus.CREATED);
     }
+    
 
     //Exception handlers
     /*

@@ -1,13 +1,10 @@
 package com.example.DataSample.exception;
 
+import lombok.*;
+
+@AllArgsConstructor
+@Data
 public class ErrorResponse {
-    private int codeStatus;
-    private String message;
-
-    public ErrorResponse(int codeStatus, String message) {
-        this.codeStatus = codeStatus;
-        this.message = message;
-    }
-
-
+    int codeStatus;
+    String message;
 }

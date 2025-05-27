@@ -1,18 +1,14 @@
 package com.example.DataSample.service;
 
-
 import org.springframework.stereotype.Service;
 
-import com.example.DataSample.controller.RegisterRequest;
-import com.example.DataSample.model.Role;
-import com.example.DataSample.model.User;
-import com.example.DataSample.repository.UserRepository;
-import com.example.DataSample.security.AuthenticationRequest;
-import com.example.DataSample.security.AuthenticationResponse;
+import com.example.DataSample.controller.*;
+import com.example.DataSample.model.*;
+import com.example.DataSample.repository.*;
+import com.example.DataSample.security.*;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
@@ -51,9 +47,9 @@ public class AuthenticationService {
 
         User user = userRepo.findByEmail(request.getEmail())
             .orElseThrow(() -> new RuntimeException("user not found"));
-        UserDetailsImpl userDetails = UserDetailsImpl.build(user);
-        String token = jwtService.generateToken(userDetails);
-        return AuthenticationResponse.builder()
+            UserDetailsImpl userDetails = UserDetailsImpl.build(user);
+            String token = jwtService.generateToken(userDetails);
+            return AuthenticationResponse.builder()
                 .token(token)
                 .build();
     }

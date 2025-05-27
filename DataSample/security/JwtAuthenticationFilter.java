@@ -53,6 +53,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+        
+        System.out.println("request: " + request.getRequestURI());
+        System.out.println("Authorization: " + authHeader);
+
     }
     
 }
